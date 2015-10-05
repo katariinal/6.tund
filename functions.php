@@ -7,32 +7,30 @@
         $stmt = $mysqli->prepare("SELECT id, user_id, number_plate, color FROM car_plates");
         $stmt->bind_result($id_from_db, $user_id_from_db, $number_plate_from_db, $color_from_db);
         $stmt->execute();
-        //iga rea kohta, mis on andmebaasis, teeme midagi 
-        $row_nr = 0;
+  
         // iga rea kohta mis on ab'is teeme midagi
         
-        echo "<table border=1>";
-        echo "<tr><th>rea nr</th><th>auto nr märk</th></tr>";
-        while($stmt->fetch()){
-            //saime andmed kätte
-            //echo $row_nr." ".$number_plate_from_db." <br>";
-            
-            echo "<tr>";
-            echo "<td>".$row_nr."</td>";
-            echo "<td>".$number_plate_from_db."</td>";
-            echo "</tr>";
-            
-            $row_nr++;
-        }
-        echo "</table>";
+        //massii, kus hoiame autosid
+        $array = array(); 
         
-        /*while($stmt->fetch()){
-            //saime andmed kätte
-            echo($number_plate_from_db);
+        while($stmt->fetch()){
+            //suvaline muutuja, kus hoida auto andmeid, hetkeni kuni lisame massiivi
             
-            //? kuidas saada massiivi
+            //tühi objekt, kus hoiame väärtuseid
+            $car = new StdClass();
+            $car->id = $id_from_db;
+            $car->number_plate = $number_plate_from_db;
             
-        }*/
+            //lisan massiivi - auto lisan massiivi
+            array_push($array, $car);
+            //echo "<pre>";
+            //var_dump($array); 
+            //echo "</pre>";
+            
+        }
+        //saadan tagasi
+        return $array;
+        
         $stmt->close();
         $mysqli->close();
     }
